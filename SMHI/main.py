@@ -84,7 +84,8 @@ def main():
     resp = requests.get(url).json()
 
     body = []
-    day = weekday_name( datetime.strptime(resp['timeSeries'][1]['validTime'], '%Y-%m-%dT%H:%M:%SZ').weekday())
+    # day = weekday_name( datetime.strptime(resp['timeSeries'][1]['validTime'], '%Y-%m-%dT%H:%M:%SZ').weekday())
+    day = ''
 
     for index in range(12):
         date = resp['timeSeries'][index]['validTime']
@@ -102,10 +103,11 @@ def main():
         clock = _Clock(date.hour, date.minute)
 
 
-        body.append(f"{clock.time} - {air_temperature['values'][0]}{degree_unit} - {wind_speed['values'][0]}{wind_speed['unit']} - {weather.forecast}")
         if day != weekday_name(date.weekday()):
         	body.append(f"{weekday_name(date.weekday())}:")
         day = weekday_name(date.weekday())
+
+        body.append(f"{clock.time} - {air_temperature['values'][0]}{degree_unit} - {wind_speed['values'][0]}{wind_speed['unit']} - {weather.forecast}")
 
     body = '\n'.join(body)
 
